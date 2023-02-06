@@ -10,6 +10,11 @@ gunicorn = "*"
 psycopg2-binary = "*"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
+pytest = "*"
+pytest-django = "*"
+faker = "*"
+coverage = "*"
+pytest-cov = "*"
 
 [dev-packages]
 
