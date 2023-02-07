@@ -139,3 +139,29 @@ def get_new_random_dish(create_dish_data: Callable, faker: Faker) -> dict[str, s
         preparation_time=randint(5, 90),
         is_vegetarian=randint(0, 1)
     )
+
+
+@pytest.fixture
+def create_menu_data(db) -> Callable[[str], dict[str, str]]:
+    """
+    The function through closure returns a function that we can call with our data
+    """
+
+    def create_clousure_menu(name: str, description: str) -> dict[str, str]:
+        return {
+            "name": name,
+            "description": description,
+        }
+
+    return create_clousure_menu
+
+
+@pytest.fixture
+def get_new_random_menu(create_menu_data: Callable, faker: Faker) -> dict[str, str]:
+    """
+    The function creates a menu with random data
+    """
+    return create_menu_data(
+        name=faker.paragraph(nb_sentences=1),
+        description=faker.paragraph(nb_sentences=5)
+    )
