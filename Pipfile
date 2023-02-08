@@ -15,6 +15,7 @@ pytest-django = "*"
 faker = "*"
 coverage = "*"
 pytest-cov = "*"
+django-filter = "*"
 
 [dev-packages]
 

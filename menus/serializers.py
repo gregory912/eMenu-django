@@ -44,9 +44,9 @@ class MenuSerializer(serializers.ModelSerializer):
         - Data without dishes will not result in any operation.
         Record made transactional to ensure data correctness.
         """
-        if dishes := validated_data.get('dishes', None):
+        if 'dishes' in validated_data:
             Dish.objects.filter(menu=instance.id).delete()
-            if validated_data['dishes']:
+            if dishes := validated_data['dishes']:
                 Dish.objects.bulk_create(self._get_list_of_unsaved_objects(instance, dishes))
 
         instance.name = validated_data.get('name', instance.name)
@@ -62,3 +62,26 @@ class MenuSerializer(serializers.ModelSerializer):
         In order to use the bulk create function, open unsaved objects that will be passed to the function
         """
         return [Dish(**item) for item in list_of_dishes if not item.update({"menu": instance})]
+
+
+class MenuDetailSerializer(serializers.ModelSerializer):
+
+    dishes = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Menu
+        fields = [
+            'id',
+            'dishes',
+            'name',
+            'description',
+        ]
+
+    @staticmethod
+    def get_dishes(menu_obj: Menu) -> Dish:
+        """
+        The function returns all serialized data for the entered menu object
+        """
+        dish = Dish.objects.filter(menu=menu_obj)
+        serializer = DishSerializer(dish, many=True)
+        return serializer.data
