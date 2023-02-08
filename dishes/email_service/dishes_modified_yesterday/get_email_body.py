@@ -14,16 +14,16 @@ class GetDataDishesModifiedYesterday(GetData):
         The function retrieves all dishes that were modified yesterday
         """
         return Dish.objects.filter(
-            modified__gt=self._get_day_before_yesterday_date(),
+            modified__gt=self._get_yesterday_date(),
             modified__lt=date.today(),
         )
 
     @staticmethod
-    def _get_day_before_yesterday_date() -> date:
+    def _get_yesterday_date() -> date:
         """
-        Return date from the day before yesterday
+        Return yesterday date
         """
-        return date.today() - timedelta(days=2)
+        return date.today() - timedelta(days=1)
 
 
 class GetUrlsDishesModifiedYesterday(GetUrls):

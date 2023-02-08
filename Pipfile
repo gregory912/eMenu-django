@@ -16,6 +16,7 @@ faker = "*"
 coverage = "*"
 pytest-cov = "*"
 django-filter = "*"
+pytest-mock = "*"
 
 [dev-packages]
 
