@@ -3,9 +3,9 @@ from .serializers import DishSerializer
 from rest_framework import generics
 
 
-class DishDetail(generics.UpdateAPIView):
+class DishDetail(generics.RetrieveUpdateAPIView):
     """
-    The class manages to modify the dishes
+    The class manages to retrieve and modify the dishes
     """
     queryset = Dish.objects.all()
     serializer_class = DishSerializer
