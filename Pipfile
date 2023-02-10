@@ -21,6 +21,9 @@ redis = "*"
 flower = "*"
 celery = "*"
 django-celery-beat = "*"
+drf-yasg = "*"
+django-rest-swagger = "*"
+drf-spectacular = "*"
 
 [dev-packages]
 
