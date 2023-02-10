@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Callable
-from django.db.models.query import QuerySet
+from typing import Any
 
 
 class GetData(ABC):
@@ -10,7 +10,7 @@ class GetData(ABC):
     """
 
     @abstractmethod
-    def get_data(self) -> list[QuerySet]:
+    def get_data(self) -> dict[str, Any]:
         pass
 
 
@@ -24,9 +24,9 @@ class GetUrls(ABC):
         self.data = data
 
     @abstractmethod
-    def get_full_urls(self) -> list[str]:
+    def get_full_urls(self) -> dict[str, list[str]]:
         """
-        The function returns a list of URLs
+        The function returns a dict with URLs
         """
         pass
 
@@ -44,8 +44,8 @@ class GetBody(ABC):
     The class prepares a body that will be sent in an e-mail
     """
     def __init__(self, urls: GetUrls, data: GetData, base_body: Callable):
-        self.urls = urls.get_full_urls()
-        self.data = data.get_data()
+        self.urls = urls
+        self.data = data
         self.base_body = base_body
 
     def base_email_body(self) -> Callable:

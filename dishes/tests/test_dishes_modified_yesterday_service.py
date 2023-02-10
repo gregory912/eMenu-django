@@ -22,7 +22,8 @@ def test_dishes_modified_yesterday_correct_date(mocker, get_new_random_dish: dic
     patcher = mocker.patch("django.utils.timezone.now", return_value=datetime.today() - timedelta(days=1))
     Dish.objects.create(menu=create_menu, **get_new_random_dish)
 
-    assert Dish.objects.all().count() == len(GetDataDishesModifiedYesterday().get_data())
+    assert Dish.objects.all().count() == len(GetDataDishesModifiedYesterday().get_data()['created'])
+    assert len(GetDataDishesModifiedYesterday().get_data()['modified']) == 0
     patcher.stop()
 
 
@@ -35,7 +36,7 @@ def test_dishes_modified_yesterday_today_date(mocker, get_new_random_dish: dict[
     patcher = mocker.patch("django.utils.timezone.now", return_value=datetime.today())
     Dish.objects.create(menu=create_menu, **get_new_random_dish)
 
-    assert len(GetDataDishesModifiedYesterday().get_data()) == 0
+    assert len(GetDataDishesModifiedYesterday().get_data()['created']) == 0
     patcher.stop()
 
 
@@ -48,5 +49,5 @@ def test_dishes_modified_yesterday_day_before_yesterday(mocker, get_new_random_d
     patcher = mocker.patch("django.utils.timezone.now", return_value=datetime.today() - timedelta(days=2))
     Dish.objects.create(menu=create_menu, **get_new_random_dish)
 
-    assert len(GetDataDishesModifiedYesterday().get_data()) == 0
+    assert len(GetDataDishesModifiedYesterday().get_data()['created']) == 0
     patcher.stop()

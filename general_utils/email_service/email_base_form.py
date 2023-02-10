@@ -93,9 +93,13 @@ def base_email_form(body: str) -> str:
                 .title {{
                     padding-top: 30px;
                 }}
+                
+                .title_content {{
+                    margin-top: 15px;
+                }}
     
                 .content {{
-                    margin-top: 40px;
+                    margin-top: 20px;
                 }}
     
                 footer {{

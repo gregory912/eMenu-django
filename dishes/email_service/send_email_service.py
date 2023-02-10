@@ -12,17 +12,21 @@ def send_email_dishes_modified_yesterday() -> None:
     """
     dishes_data_obj = GetDataDishesModifiedYesterday()
 
-    dishes_body_obj = GetBodyDishesModifiedYesterday(
-        GetUrlsDishesModifiedYesterday(dishes_data_obj),
-        dishes_data_obj,
-        base_email_form
-    )
+    dishes_data = dishes_data_obj.get_data()
 
-    emails_obj = GetEmailsAllUsers()
+    if dishes_data['created'] or dishes_data['modified']:
 
-    send_email_instance = SendEmailDishesModifiedYesterday(
-        dishes_body_obj,
-        emails_obj
-    )
+        dishes_body_obj = GetBodyDishesModifiedYesterday(
+            GetUrlsDishesModifiedYesterday(dishes_data_obj),
+            dishes_data_obj,
+            base_email_form
+        )
 
-    send_email_instance.send_email()
+        emails_obj = GetEmailsAllUsers()
+
+        send_email_instance = SendEmailDishesModifiedYesterday(
+            dishes_body_obj,
+            emails_obj
+        )
+
+        send_email_instance.send_email()

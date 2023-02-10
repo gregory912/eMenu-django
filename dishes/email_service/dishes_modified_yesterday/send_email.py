@@ -11,10 +11,10 @@ class SendEmailDishesModifiedYesterday(SendEmail):
     def _get_obj(self) -> EmailMultiAlternatives:
         email = EmailMultiAlternatives(
             subject=f'Check out the latest dishes!',
-            to=self.emails
+            to=self.emails.get_required_emails
         )
         email.content_subtype = 'html'
-        email.attach_alternative(self.body, "text/html")
+        email.attach_alternative(self.body.base_email_body(), "text/html")
         email.mixed_subtype = 'related'
         email.attach(self._add_header_with_file(self.paths[0]))
         return email

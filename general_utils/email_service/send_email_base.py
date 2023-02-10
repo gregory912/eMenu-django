@@ -15,8 +15,8 @@ class SendEmail(ABC):
     """
     def __init__(self, body: GetBody, emails: GetEmails):
         self.paths = [LOGO_PATH]
-        self.body = body.base_email_body()
-        self.emails = emails.get_required_emails
+        self.body = body
+        self.emails = emails
 
     @property
     def file_paths(self) -> list[any]:
