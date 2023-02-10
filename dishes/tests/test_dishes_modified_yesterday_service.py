@@ -19,10 +19,11 @@ def test_dishes_modified_yesterday_correct_date(mocker, get_new_random_dish: dic
     Test if the function GetDate Dishes Modified Yesterday returns all dishes from yesterday
     Functions in Django were mocked for testing purposes
     """
-    mocker.patch("django.utils.timezone.now", return_value=datetime.today() - timedelta(days=1))
+    patcher = mocker.patch("django.utils.timezone.now", return_value=datetime.today() - timedelta(days=1))
     Dish.objects.create(menu=create_menu, **get_new_random_dish)
 
     assert Dish.objects.all().count() == len(GetDataDishesModifiedYesterday().get_data())
+    patcher.stop()
 
 
 def test_dishes_modified_yesterday_today_date(mocker, get_new_random_dish: dict[str, str], create_menu: Menu):
@@ -31,10 +32,11 @@ def test_dishes_modified_yesterday_today_date(mocker, get_new_random_dish: dict[
     for an incorrectly entered value for today
     Functions in Django were mocked for testing purposes
     """
-    mocker.patch("django.utils.timezone.now", return_value=datetime.today())
+    patcher = mocker.patch("django.utils.timezone.now", return_value=datetime.today())
     Dish.objects.create(menu=create_menu, **get_new_random_dish)
 
-    assert Dish.objects.all().count() != len(GetDataDishesModifiedYesterday().get_data())
+    assert len(GetDataDishesModifiedYesterday().get_data()) == 0
+    patcher.stop()
 
 
 def test_dishes_modified_yesterday_day_before_yesterday(mocker, get_new_random_dish: dict[str, str], create_menu: Menu):
@@ -43,7 +45,8 @@ def test_dishes_modified_yesterday_day_before_yesterday(mocker, get_new_random_d
     for an incorrectly entered value for day before yesterday
     Functions in Django were mocked for testing purposes
     """
-    mocker.patch("django.utils.timezone.now", return_value=datetime.today() - timedelta(days=2))
-    m = Dish.objects.create(menu=create_menu, **get_new_random_dish)
+    patcher = mocker.patch("django.utils.timezone.now", return_value=datetime.today() - timedelta(days=2))
+    Dish.objects.create(menu=create_menu, **get_new_random_dish)
 
-    assert Dish.objects.all().count() != len(GetDataDishesModifiedYesterday().get_data())
+    assert len(GetDataDishesModifiedYesterday().get_data()) == 0
+    patcher.stop()

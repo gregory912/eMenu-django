@@ -1,8 +1,9 @@
 from django.db import models
 from menus.models import Menu
+from general_utils.models import TimeStampedModel
 
 
-class Dish(models.Model):
+class Dish(TimeStampedModel):
 
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
@@ -10,8 +11,6 @@ class Dish(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2)
     preparation_time = models.IntegerField()
     is_vegetarian = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name

@@ -3,8 +3,9 @@ from django.urls import reverse
 from dishes.models import Dish
 from general_utils.email_service.get_email_body_base import GetData, GetBody, GetUrls
 from general_utils.email_service.send_email_base import LOGO_PATH
-from datetime import date, timedelta
+from datetime import datetime, timedelta, time, date
 import os
+from django.utils.timezone import make_aware
 
 
 class GetDataDishesModifiedYesterday(GetData):
@@ -14,16 +15,28 @@ class GetDataDishesModifiedYesterday(GetData):
         The function retrieves all dishes that were modified yesterday
         """
         return Dish.objects.filter(
-            modified__gt=self._get_yesterday_date(),
-            modified__lt=date.today(),
+            modified__gt=self._get_start_date(),
+            modified__lt=self._get_end_date(),
         )
 
+    def _get_start_date(self) -> datetime:
+        """
+        The function returns the date of the previous day in the format 2023-01-01 00:00:00
+        """
+        return self._get_aware_base_date(datetime.utcnow().date()) - timedelta(days=1)
+
+    def _get_end_date(self) -> datetime:
+        """
+        The function returns today's date in the format 2023-01-01 00:00:00
+        """
+        return self._get_aware_base_date(datetime.utcnow().date())
+
     @staticmethod
-    def _get_yesterday_date() -> date:
+    def _get_aware_base_date(date_: date) -> datetime:
         """
-        Return yesterday date
+        The function based on the date creates an aware datetime in the format 2023-01-01 00:00:00
         """
-        return date.today() - timedelta(days=1)
+        return make_aware(datetime.combine(date_, time()))
 
 
 class GetUrlsDishesModifiedYesterday(GetUrls):
