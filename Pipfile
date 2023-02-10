@@ -17,6 +17,10 @@ coverage = "*"
 pytest-cov = "*"
 django-filter = "*"
 pytest-mock = "*"
+redis = "*"
+flower = "*"
+celery = "*"
+django-celery-beat = "*"
 
 [dev-packages]
 
